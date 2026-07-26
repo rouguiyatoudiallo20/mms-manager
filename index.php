@@ -7,7 +7,6 @@ if (!isset($_SESSION['utilisateur'])) {
 }
 
 require 'db.php';
-?>
 try {
     $sql = "SELECT * FROM produits_cosmetique ORDER BY id DESC";
     $stmt = $pdo->query($sql);
