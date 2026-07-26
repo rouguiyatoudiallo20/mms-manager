@@ -1,27 +1,29 @@
 <?php
-session_start();
-require 'db.php'; // On appelle la base de données en ligne configurée dans db.php
+require 'db.php'; 
 
-$erreur = "";
+$message = "";
+$status = "";
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
+    if (!empty($_POST['username']) && !empty($_POST['password'])) {
+        $username = htmlspecialchars($_POST['username']);
+        $password_hashed = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-
-if (!empty($_POST['username']) && !empty($_POST['password'])) {
-    $username = htmlspecialchars($_POST['username']);
-    $password_hashed = password_hash($_POST['password'], PASSWORD_DEFAULT);
-
-    $insert = $bdd->prepare("INSERT INTO utilisateurs(identifiant, mot_de_passe) VALUES(?, ?)");
-    try {
-        $insert->execute([$username, $password_hashed]);
-        $message = "Compte créé avec succès ! <a href='connexion.php'>Se connecter</a>";
-        $status = "success";
-    } catch(Exception $e) {
-        $message = "Cet identifiant est déjà utilisé.";
-        $status = "error";
+        // On utilise bien $pdo ici pour correspondre à votre fichier db.php
+        $insert = $pdo->prepare("INSERT INTO utilisateurs(identifiant, mot_de_passe) VALUES(?, ?)");
+        try {
+            $insert->execute([$username, $password_hashed]);
+            $message = "Compte créé avec succès ! <a href='connexion.php'>Se connecter</a>";
+            $status = "success";
+        } catch(Exception $e) {
+            $message = "Cet identifiant est déjà utilisé.";
+            $status = "error";
+        }
     }
-}
+} // <--- C'est cette accolade finale qui manquait à la ligne 80 !
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
