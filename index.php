@@ -1,6 +1,13 @@
-<?php
-require 'db.php';
 
+<?php
+session_start();
+if (!isset($_SESSION['utilisateur'])) {
+    header('Location: connexion.php');
+    exit();
+}
+
+require 'db.php';
+?>
 try {
     $sql = "SELECT * FROM produits_cosmetique ORDER BY id DESC";
     $stmt = $pdo->query($sql);
