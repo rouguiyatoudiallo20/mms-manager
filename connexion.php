@@ -1,17 +1,15 @@
 <?php
 session_start();
-require 'db.php'; // On appelle la base de données en ligne configurée dans db.php
+require 'db.php'; 
 
 $erreur = "";
-
-if (isset($_POST['username']) && isset($_POST['password'])) {
-
 
 if (isset($_POST['username']) && isset($_POST['password'])) {
     if (!empty($_POST['username']) && !empty($_POST['password'])) {
         $username = htmlspecialchars($_POST['username']);
         
-        $check = $bdd->prepare("SELECT * FROM utilisateurs WHERE identifiant = ?");
+        // Attention : on utilise $pdo ici (comme dans votre fichier db.php)
+        $check = $pdo->prepare("SELECT * FROM utilisateurs WHERE identifiant = ?");
         $check->execute([$username]);
         $user = $check->fetch();
 
@@ -23,8 +21,10 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             $erreur = "Identifiant ou mot de passe incorrect.";
         }
     }
-}
+} // <--- C'était cette accolade de fermeture qui manquait à la fin !
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
