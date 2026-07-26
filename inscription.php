@@ -1,7 +1,11 @@
 <?php
-$bdd = new PDO('mysql:host=localhost;dbname=mms_db;charset=utf8', 'root', '');
-$message = "";
-$status = "";
+session_start();
+require 'db.php'; // On appelle la base de données en ligne configurée dans db.php
+
+$erreur = "";
+
+if (isset($_POST['username']) && isset($_POST['password'])) {
+
 
 if (!empty($_POST['username']) && !empty($_POST['password'])) {
     $username = htmlspecialchars($_POST['username']);
